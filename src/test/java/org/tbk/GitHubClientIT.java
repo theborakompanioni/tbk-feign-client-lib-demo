@@ -27,5 +27,12 @@ public class GitHubClientIT {
 
         assertThat(contributors, is(notNullValue()));
         assertThat(contributors, hasSize(greaterThan(0)));
+
+
+        final Contributor anyContributor = contributors.stream().findAny()
+                .orElseThrow(IllegalStateException::new);
+
+        assertThat(anyContributor, is(notNullValue()));
+        assertThat(anyContributor.getId(), is(greaterThan(0L)));
     }
 }

@@ -26,5 +26,11 @@ public class MyClientIT {
 
         assertThat(posts, is(notNullValue()));
         assertThat(posts, hasSize(greaterThan(0)));
+
+        final Post anyPost = posts.stream().findAny()
+                .orElseThrow(IllegalStateException::new);
+
+        assertThat(anyPost, is(notNullValue()));
+        assertThat(anyPost.getId(), is(greaterThan(0L)));
     }
 }
