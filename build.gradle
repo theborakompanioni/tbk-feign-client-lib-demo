@@ -26,8 +26,12 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.16.16'
 
-    testCompile('org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE')
-    testCompile('org.springframework.boot:spring-boot-starter-test:1.5.2.RELEASE')
+    testCompile 'org.slf4j:slf4j-simple:1.7.25'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.2.RELEASE'
+    testCompile('org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE') {
+        exclude module: 'spring-boot-starter-logging'
+    }
+
 }
 
 
