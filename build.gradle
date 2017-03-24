@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile 'io.github.openfeign:feign-core:9.4.0'
+    compile 'io.github.openfeign:feign-okhttp:9.4.0'
+    compile 'io.github.openfeign:feign-hystrix:9.4.0'
+    compile 'io.github.openfeign:feign-jackson:9.4.0'
+    compile 'io.github.openfeign:feign-slf4j:9.4.0'
+
+    compile 'com.google.guava:guava:21.0'
+
+    compileOnly 'org.projectlombok:lombok:1.16.16'
+
+    testCompile('org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE')
+    testCompile('org.springframework.boot:spring-boot-starter-test:1.5.2.RELEASE')
+}
+
+
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+tasks.withType(Test) {
+    testLogging {
+        // set options for log level LIFECYCLE
+        events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
+        showExceptions true
+        exceptionFormat TestExceptionFormat.FULL
+        showCauses true
+        showStackTraces true
+
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
+    }
+}
